@@ -913,7 +913,7 @@ hexTriplet::hexTriplet(NSString *str)
 		NSArray<NSString*>* parts = [[str substringWithRange:(NSRange) { 4, str.length-5 }] componentsSeparatedByString:@","];
 		NSCParameterAssert([parts count] == 3);
 		str = [NSString stringWithFormat:@"#%02x%02x%02x", (unsigned int)parts[0].integerValue, (unsigned int)parts[1].integerValue, (unsigned int)parts[2].integerValue];
-	} else {
+	} else if ([str hasPrefix: @"#"]){
 		NSCParameterAssert([str hasPrefix:@"#"]);
 		NSCParameterAssert([str length] == 4 || [str length] == 7);
 		if([str length] == 4) {
@@ -926,6 +926,9 @@ hexTriplet::hexTriplet(NSString *str)
 										 atIndex:1];
 		}
 	}
+    else{
+        str = @"#000000";
+    }
     _data = (uint32_t)strtol([str cStringUsingEncoding:NSASCIIStringEncoding]+1, NULL, 16);
 }
 
